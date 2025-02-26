@@ -60,18 +60,19 @@
     border: 1px solid #ddd;
     text-align: left;
     
+    
   }
   
   .data-table th {
     background-color: #000000;
     color: #ffffff;
-    border: 1px solid #000000;
+    border: 1px solid #ddd;
   }
   
  
   
   .data-table tr:hover {
-    background-color: #695555;
-    color: #ffffff;
+    background-color: #69555554;
+    color: #000000;
   }
   
