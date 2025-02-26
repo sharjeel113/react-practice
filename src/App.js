@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { submitData, fetchData, apiUrl } from "./core/services/apifile";
 import "./App.css";
 
 const App = () => {
@@ -21,34 +22,18 @@ const App = () => {
     localStorage.setItem("formData", JSON.stringify(updatedData));
     setStoredData(updatedData);
 
-    try {
-      await fetch("https://jsonplaceholder.typicode.com/posts/1", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-    } catch (error) {
-      console.error("Error submitting data:", error);
-    }
-
+    await submitData(formData);
     setFormData({ name: "", email: "" });
   };
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch(
-        "https://jsonplaceholder.typicode.com/posts/1"
-      );
-      const data = await response.json();
-      console.log("Fetched API Data:", data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+  const handleFetchData = async () => {
+    const data = await fetchData();
+    console.log("Fetched API Data:", data);
   };
 
   return (
     <div className="container">
-      <h2>React + Axios Form with API and Local Storage</h2>
+      <h2>React Form with API and Local Storage</h2>
       <form onSubmit={handleSubmit} className="form">
         <input
           type="text"
@@ -69,18 +54,27 @@ const App = () => {
         <button type="submit">Submit</button>
       </form>
 
-      <button onClick={fetchData} className="fetch-button">
-        Fetch API Data
+      <button onClick={handleFetchData} className="fetch-button">
+        Refresh API Data
       </button>
 
       <h3>Stored Data:</h3>
-      <ul className="data-list">
-        {storedData.map((item, index) => (
-          <li key={index}>
-            {item.name} - {item.email}
-          </li>
-        ))}
-      </ul>
+      <table className="data-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          {storedData.map((item, index) => (
+            <tr key={index}>
+              <td>{item.name}</td>
+              <td>{item.email}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
